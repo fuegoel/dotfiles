@@ -32,7 +32,7 @@ override_git_prompt_colors() {
     GIT_PROMPT_END_USER="\n${BoldRed} ➤ ${ResetColor}"
     GIT_PROMPT_END_ROOT="\n${BoldRed} » ${ResetColor}"
   else
-    GIT_PROMPT_END_USER="\n${BoldBlue} ➭ ${ResetColor}"
+    GIT_PROMPT_END_USER="\n${BoldBlue} $ ${ResetColor}"
     GIT_PROMPT_END_ROOT="\n${BoldRed} # ${ResetColor}"
   fi
 GIT_PROMPT_SYMBOLS_AHEAD="↑·"             # The symbol for "n versions ahead of origin"
