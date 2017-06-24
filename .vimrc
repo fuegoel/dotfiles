@@ -13,6 +13,8 @@ Plug 'https://github.com/dhruvasagar/vim-table-mode.git'
 Plug 'https://github.com/bronson/vim-trailing-whitespace.git'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'lervag/vimtex'
+Plug 'greymd/tmux-xpanes'
 
 call plug#end()
 
@@ -112,6 +114,12 @@ let g:airline#extensions#wordcount#enabled=1
 "let g:airline#extensions#wordcount#filetypes=tex
 let g:airline#extensions#wordcount#formatter='default'
 let g:airline#extensions#wordcount#format='%d words'
+
+" LaTeX
+set grepprg=grep\ -nH\ $*
+let g:vimtex_compiler_latexmk = {'callback' : 0}
+let g:vimtex_view_method = 'zathura'
+let g:tex_flavor = 'latex'
 
 " Display tabs and trailing spaces visually
 " set list listchars=tab:\ \,trail:.
