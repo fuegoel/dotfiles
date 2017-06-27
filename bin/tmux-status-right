@@ -1,0 +1,38 @@
+#!/bin/sh
+
+bat()
+{
+	BATPATH=/sys/class/power_supply/BAT0
+	STATUS=$BATPATH/status
+	BAT_FULL=$BATPATH/energy_full
+	BAT_NOW=$BATPATH/energy_now
+	bf=$(cat $BAT_FULL)
+	bn=$(cat $BAT_NOW)
+	stat=$(cat $STATUS)
+	case $stat in
+		Full)
+			st="◼"
+			;;
+		Discharging)
+			st="🔋"
+			;;
+		Charging)
+			st="⚡"
+			;;
+	esac
+	echo "#[bg=colour14]#[fg=colour0]▒░$st$(( 100 * $bn / $bf ))%"
+}
+
+mtime()
+{
+	mtime=$(date +'%H:%M:%S')
+  echo "#[bg=colour14]#[fg=colour0] $mtime"
+}
+
+mday()
+{
+  mday=$(date +'%a %b %d')
+  echo "#[bg=colour14]#[fg=colour0] $mday"
+}
+
+echo "░`bat` ░▒░`mtime` ░▒░`mday`░"

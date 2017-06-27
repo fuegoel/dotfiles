@@ -111,7 +111,7 @@ let g:airline#extensions#branch#vcs_priority = ["git", "mercurial"]
 let g:airline#extensions#branch#format=1
 let g:airline#extensions#virtualenv#enabled=1
 let g:airline#extensions#wordcount#enabled=1
-"let g:airline#extensions#wordcount#filetypes=tex
+let g:airline#extensions#wordcount#filetypes='tex'
 let g:airline#extensions#wordcount#formatter='default'
 let g:airline#extensions#wordcount#format='%d words'
 
