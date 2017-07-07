@@ -14,7 +14,7 @@ bat()
   stat=$(cat $STATUS)
 	case $stat in
 		Full)
-			st="◼"
+			st="♥"
 			;;
 		Discharging)
 			st="🔋"
@@ -29,13 +29,13 @@ bat()
 mtime()
 {
 	mtime=$(date +'%H:%M:%S')
-  echo "#[bg=colour14]#[fg=colour0] $mtime"
+  echo "#[bg=colour14]#[fg=colour0]$mtime"
 }
 
 mday()
 {
   mday=$(date +'%a %b %d')
-  echo "#[bg=colour14]#[fg=colour0] $mday"
+  echo "#[bg=colour14]#[fg=colour0]$mday"
 }
 
-echo "░`bat` ░▒░`mtime` ░▒░`mday`░"
+echo "░`bat`░▒░`mtime`░▒░`mday`░"
