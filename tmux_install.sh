@@ -6,6 +6,7 @@ LIBEVENT_VERSION=2.1.8
 NCURSES_VERSION=6.0
 
 mkdir -p $HOME/local $HOME/tmux_tmp
+rm -rf $HOME/tmux_tmp/*
 cd $HOME/tmux_tmp
 
 ############
@@ -23,9 +24,10 @@ cd ..
 # ncurses  #
 ############
 wget ftp://ftp.gnu.org/gnu/ncurses/ncurses-${NCURSES_VERSION}.tar.gz
-tar xvzf ncurses-${NCURSES}.tar.gz
+tar xvzf ncurses-${NCURSES_VERSION}.tar.gz
 cd ncurses-*/
-./configure --prefix=$HOME/local LDFLAGS="-static"
+#./configure --prefix=$HOME/local LDFLAGS="-static"
+./configure --prefix=$HOME/local
 make
 make install
 cd ..
