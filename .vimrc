@@ -16,6 +16,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
 Plug 'greymd/tmux-xpanes'
 Plug 'ajh17/VimCompletesMe'
+Plug 'chase/vim-ansible-yaml'
 
 call plug#end()
 
