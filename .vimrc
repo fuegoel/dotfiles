@@ -15,8 +15,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
 Plug 'greymd/tmux-xpanes'
-Plug 'ajh17/VimCompletesMe'
 Plug 'chase/vim-ansible-yaml'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 
 call plug#end()
 
@@ -122,6 +123,12 @@ set grepprg=grep\ -nH\ $*
 let g:vimtex_compiler_latexmk = {'callback' : 0}
 let g:vimtex_view_method = 'zathura'
 let g:tex_flavor = 'latex'
+
+" Vim autocomplete
+imap <Tab> <C-P>
+set complete=.,b,u,]
+set wildmode=longest,list:longest
+set completeopt=menu,preview
 
 " Display tabs and trailing spaces visually
 " set list listchars=tab:\ \,trail:.
