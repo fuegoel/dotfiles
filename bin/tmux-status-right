@@ -4,13 +4,15 @@ bat()
 {
 	BATPATH=/sys/class/power_supply/BAT0
 	STATUS=$BATPATH/status
-	#Depending on system
-  #BAT_FULL=$BATPATH/energy_full
-  #BAT_NOW=$BATPATH/energy_now
-  BAT_FULL=$BATPATH/charge_full
-  BAT_NOW=$BATPATH/charge_now
-  bf=$(cat $BAT_FULL)
-  bn=$(cat $BAT_NOW)
+  BATFULL=$BATPATH/energy_full
+  if [ -f $BATFULL ]; then
+    BATNOW=$BATPATH/energy_now
+  else
+    BATFULL=$BATPATH/charge_full
+    BATNOW=$BATPATH/charge_now
+  fi
+  bf=$(cat $BATFULL)
+  bn=$(cat $BATNOW)
   stat=$(cat $STATUS)
 	case $stat in
 		Full)

@@ -15,9 +15,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
 Plug 'greymd/tmux-xpanes'
-Plug 'chase/vim-ansible-yaml'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
+Plug 'pearofducks/ansible-vim'
 
 call plug#end()
 
