@@ -41,7 +41,7 @@ cd tmux-${TMUX_VERSION}
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/usr/local/lib"
 ./configure CFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-L$HOME/local/lib -L$HOME/local/include/ncurses -L$HOME/local/include"
 CPPFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-static -L$HOME/local/include -L$HOME/local/include/ncurses -L$HOME/local/lib" make
-cp tmux $HOME/local/bin
+cp tmux $HOME/usr/local/bin
 cd ..
 
 echo "Add export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/usr/local/lib" to your .bashrc"
