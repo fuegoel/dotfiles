@@ -130,5 +130,8 @@ set complete=.,b,u,]
 set wildmode=longest,list:longest
 set completeopt=menu,preview
 
+" Clipboard
+set clipboard=unnamed
+
 " Display tabs and trailing spaces visually
 " set list listchars=tab:\ \,trail:.
