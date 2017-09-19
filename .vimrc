@@ -133,5 +133,8 @@ set completeopt=menu,preview
 " Clipboard
 set clipboard=unnamed
 
+" Allow saving read-only files when using vim without sudo
+cmap w!! w !sudo tee > /dev/null %
+
 " Display tabs and trailing spaces visually
 " set list listchars=tab:\ \,trail:.
