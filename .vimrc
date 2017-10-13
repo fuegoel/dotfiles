@@ -18,6 +18,7 @@ Plug 'greymd/tmux-xpanes'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
+Plug 'fatih/vim-go'
 
 call plug#end()
 
