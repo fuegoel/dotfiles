@@ -1,0 +1,96 @@
+---
+- name: foo
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    install_tmux: true
+    tmux_version: 2.5
+    libevent_version: 2.1.8
+    ncurses_version: 6.0
+    pkgs:
+      - url: "https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/tmux-{{ tmux_version }}.tar.gz"
+        archive: "tmux-{{ tmux_version }}.tar.gz"
+        name: "tmux-{{ tmux_version }}"
+      - url: "https://github.com/libevent/libevent/releases/download/release-{{ libevent_version }}-stable/libevent-{{ libevent_version }}-stable.tar.gz"
+        archive: "libevent-{{ libevent_version }}.tar.gz"
+        name: "libevent-{{ libevent_version }}"
+      - url: "ftp://ftp.gnu.org/gnu/ncurses/ncurses-{{ ncurses_version }}.tar.gz"
+        archive: "ncurses-{{ ncurses_version }}.tar.gz"
+        name: "ncurses-{{ ncurses_version }}"
+    install_zsh: true
+  pre-tasks:
+    - name: Check if python2 is available
+      raw: python2 --version
+      args:
+        executable: /bin/bash
+      register: python2_available
+      failed_when: false
+      changed_when: false
+
+    - name: Use python3 as the ansible interpreter if python2 is unavailable
+      set_fact:
+        ansible_python_interpreter: /usr/bin/python3
+      when: "'not installed' in python2_available.stdout or 'not found in python2_available.stdout'"
+
+    - name: Gather facts
+      setup:
+        filter: ansible_*
+
+  tasks:
+    - block:
+      - name: Create a temporary directory
+        tempfile:
+          state: directory
+          suffix: tmux
+        register: temp_dir
+
+      - set_fact:
+          runtime_tempdir: "{{ temp_dir.path }}"
+
+      - name: Download packages
+        get_url:
+          url: "{{ pkg.url }}"
+          dest: "{{ runtime_tempdir }}/{{ pkg.archive }}"
+        with_items: "{{ pkgs }}"
+        loop_control:
+          loop_var: pkg
+
+      - name: Unarchive packages
+        unarchive:
+          src: "{{ pkg.archive }}"
+          dest: "{{ pkg.name }}"
+          remote_src: yes
+        args:
+          chdir: "{{ runtime_tempdir }}"
+        with_items: "{{ pkgs }}"
+        loop_control:
+          loop_var: pkg
+
+      - name: Install tmux
+        command: "{{ item }}"
+        args:
+          chdir:
+        environment: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/usr/local/lib"
+
+      when: install_tmux
+
+    - name: Clone
+      git:
+        repo: https://github.com/hoaile1/dotfiles.git
+        dest: "{{ ansible_user_dir }}/dotfiles"
+        accept_hostkey: true
+
+    - name: Symlink
+      file:
+        src: "{{ ansible_user_dir }}/dotfiles/{{ item }}"
+        dest: "{{ ansible_user_dir }}/{{ item }}"
+        state: link
+      with_items:
+        - .gitconfig
+        - .git-prompt-colors.sh
+        - .tmux.conf
+        - .vimrc
+        - bin/tmux-status-right
+
+    - name:
