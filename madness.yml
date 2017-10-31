@@ -9,15 +9,26 @@
     libevent_version: 2.1.8
     ncurses_version: 6.0
     pkgs:
-      - url: "https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/tmux-{{ tmux_version }}.tar.gz"
-        archive: "tmux-{{ tmux_version }}.tar.gz"
-        name: "tmux-{{ tmux_version }}"
       - url: "https://github.com/libevent/libevent/releases/download/release-{{ libevent_version }}-stable/libevent-{{ libevent_version }}-stable.tar.gz"
         archive: "libevent-{{ libevent_version }}.tar.gz"
         name: "libevent-{{ libevent_version }}"
+        commands:
+          - ./configure --prefix=$HOME/local --disable-shared
+          - make
+          - make install
       - url: "ftp://ftp.gnu.org/gnu/ncurses/ncurses-{{ ncurses_version }}.tar.gz"
         archive: "ncurses-{{ ncurses_version }}.tar.gz"
         name: "ncurses-{{ ncurses_version }}"
+        commands:
+          - ./configure --prefix=$HOME/local
+          - make
+          - make install
+      - url: "https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/tmux-{{ tmux_version }}.tar.gz"
+        archive: "tmux-{{ tmux_version }}.tar.gz"
+        name: "tmux-{{ tmux_version }}"
+        commands:
+          - ./configure CFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-L$HOME/local/lib -L$HOME/local/include/ncurses -L$HOME/local/include"
+          - CPPFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-static -L$HOME/local/include -L$HOME/local/include/ncurses -L$HOME/local/lib" make
     install_zsh: true
   pre-tasks:
     - name: Check if python2 is available
@@ -68,9 +79,12 @@
           loop_var: pkg
 
       - name: Install tmux
-        command: "{{ item }}"
+        command: "{{ pkg.command }}"
         args:
-          chdir:
+          chdir: "{{ runtime_tempdir }}/{{ pkg.name }}"
+        with_items: "{{ pkgs }}"
+        loop_control:
+          loop_var: pkg
         environment: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/usr/local/lib"
 
       when: install_tmux
