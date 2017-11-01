@@ -5,13 +5,14 @@
   gather_facts: false
   vars:
     install_tmux: true
+    tmux_tmp_dir: "{{ ansible_env.HOME }}/tmux_tmp"
     tmux_version: 2.5
     libevent_version: 2.1.8
     ncurses_version: 6.0
     pkgs:
       - url: "https://github.com/libevent/libevent/releases/download/release-{{ libevent_version }}-stable/libevent-{{ libevent_version }}-stable.tar.gz"
         archive: "libevent-{{ libevent_version }}.tar.gz"
-        name: "libevent-{{ libevent_version }}"
+        name: "libevent-{{ libevent_version }}-stable"
         commands:
           - ./configure --prefix=$HOME/local --disable-shared
           - make
@@ -30,7 +31,8 @@
           - ./configure CFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-L$HOME/local/lib -L$HOME/local/include/ncurses -L$HOME/local/include"
           - CPPFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-static -L$HOME/local/include -L$HOME/local/include/ncurses -L$HOME/local/lib" make
     install_zsh: true
-  pre-tasks:
+
+  pre_tasks:
     - name: Check if python2 is available
       raw: python2 --version
       args:
@@ -51,37 +53,31 @@
   tasks:
     - block:
       - name: Create a temporary directory
-        tempfile:
+        file:
+          path: "{{ tmux_tmp_dir }}"
           state: directory
-          suffix: tmux
-        register: temp_dir
-
-      - set_fact:
-          runtime_tempdir: "{{ temp_dir.path }}"
 
       - name: Download packages
         get_url:
           url: "{{ pkg.url }}"
-          dest: "{{ runtime_tempdir }}/{{ pkg.archive }}"
+          dest: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
         with_items: "{{ pkgs }}"
         loop_control:
           loop_var: pkg
 
       - name: Unarchive packages
         unarchive:
-          src: "{{ pkg.archive }}"
-          dest: "{{ pkg.name }}"
+          src: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
+          dest: "{{ tmux_tmp_dir }}"
           remote_src: yes
-        args:
-          chdir: "{{ runtime_tempdir }}"
         with_items: "{{ pkgs }}"
         loop_control:
           loop_var: pkg
 
-      - name: Install tmux
-        command: "{{ pkg.command }}"
+      - name: Compile tmux
+        command: "{{ pkg.commands }}"
         args:
-          chdir: "{{ runtime_tempdir }}/{{ pkg.name }}"
+          chdir: "{{ tmux_tmp_dir }}/{{ pkg.name }}"
         with_items: "{{ pkgs }}"
         loop_control:
           loop_var: pkg
@@ -106,5 +102,3 @@
         - .tmux.conf
         - .vimrc
         - bin/tmux-status-right
-
-    - name:
