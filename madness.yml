@@ -28,8 +28,14 @@
         archive: "tmux-{{ tmux_version }}.tar.gz"
         name: "tmux-{{ tmux_version }}"
         commands:
-          - ./configure CFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-L$HOME/local/lib -L$HOME/local/include/ncurses -L$HOME/local/include"
-          - CPPFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses" LDFLAGS="-static -L$HOME/local/include -L$HOME/local/include/ncurses -L$HOME/local/lib" make
+          - >
+            ./configure
+            CFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses"
+            LDFLAGS="-L$HOME/local/lib -L$HOME/local/include/ncurses -L$HOME/local/include"
+          - >
+            CPPFLAGS="-I$HOME/local/include -I$HOME/local/include/ncurses"
+            LDFLAGS="-static -L$HOME/local/include -L$HOME/local/include/ncurses -L$HOME/local/lib"
+            make
     install_zsh: true
 
   pre_tasks:
@@ -50,6 +56,11 @@
       setup:
         filter: ansible_*
 
+    - name: Install the Development tools package group
+      package:
+        name: "@Development tools"
+      become: true
+
   tasks:
     - block:
       - name: Create a temporary directory
@@ -64,6 +75,7 @@
         with_items: "{{ pkgs }}"
         loop_control:
           loop_var: pkg
+          label: "{{ pkg.name }}"
 
       - name: Unarchive packages
         unarchive:
@@ -73,15 +85,19 @@
         with_items: "{{ pkgs }}"
         loop_control:
           loop_var: pkg
+          label: "{{ pkg.name }}"
 
       - name: Compile tmux
-        command: "{{ pkg.commands }}"
+        command: "{{ item.1 }}"
         args:
-          chdir: "{{ tmux_tmp_dir }}/{{ pkg.name }}"
-        with_items: "{{ pkgs }}"
+          chdir: "{{ tmux_tmp_dir }}/{{ item.0.name }}"
+        with_subelements:
+          - "{{ pkgs }}"
+          - commands
         loop_control:
-          loop_var: pkg
-        environment: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/usr/local/lib"
+          label: "{{ item.0.name }}"
+        environment:
+          LD_LIBRARY_PATH: $LD_LIBRARY_PATH:"/usr/local/lib"
 
       when: install_tmux
 
