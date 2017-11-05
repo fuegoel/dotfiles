@@ -1,0 +1,10 @@
+---
+- import_tasks: pre-tasks.yml
+
+- include_tasks: tmux.yml
+  when: install_tmux
+
+- include_tasks: zsh.yml
+  when: install_zsh.yml
+
+- import_tasks: dotfiles.yml

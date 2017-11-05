@@ -1,0 +1,29 @@
+---
+- name: Check if python2 is available
+  raw: python2 --version
+  args:
+    executable: /bin/bash
+  register: python2_available
+  failed_when: false
+  changed_when: false
+
+- name: Use python3 as the ansible interpreter if python2 is unavailable
+  set_fact:
+    ansible_python_interpreter: /usr/bin/python3
+  when: "'not installed' in python2_available.stdout or 'not found in python2_available.stdout'"
+
+- name: Gather facts
+  setup:
+    filter: ansible_*
+
+- name: Install development tools
+  package:
+    name: "@Development tools"
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- name: Install development tools
+  apt:
+    name: build-essential
+  become: true
+  when: ansible_os_family == "Debian"

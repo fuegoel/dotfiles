@@ -1,0 +1,44 @@
+---
+- name: Create a temporary directory
+  file:
+    path: "{{ tmux_tmp_dir }}"
+    state: directory
+
+- name: Download packages
+  get_url:
+    url: "{{ pkg.url }}"
+    dest: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
+  with_items: "{{ pkgs }}"
+  loop_control:
+    loop_var: pkg
+    label: "{{ pkg.name }}"
+
+- name: Unarchive packages
+  unarchive:
+    src: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
+    dest: "{{ tmux_tmp_dir }}"
+    remote_src: yes
+  with_items: "{{ pkgs }}"
+  loop_control:
+    loop_var: pkg
+    label: "{{ pkg.name }}"
+
+- name: Compile tmux
+  command: "{{ item.1 }}"
+  args:
+    chdir: "{{ tmux_tmp_dir }}/{{ item.0.name }}"
+  with_subelements:
+    - "{{ pkgs }}"
+    - commands
+  loop_control:
+    label: "{{ item.0.name }}"
+  environment:
+    LD_LIBRARY_PATH: $LD_LIBRARY_PATH:"/usr/local/lib"
+
+- name: Symlink dotfiles
+  file:
+    src: "{{ ansible_user_dir }}/dotfiles/{{ item }}"
+    dest: "{{ ansible_user_dir }}/{{ item }}"
+  with_items:
+    - .tmux.conf
+    - bin/tmux-status-right
