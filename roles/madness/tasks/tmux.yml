@@ -1,5 +1,10 @@
 ---
-# TODO: Check if libevent and ncurses exist. Check if tmux was installed.
+# TODO:
+# Check if libevent and ncurses exist.
+# Check if tmux was installed.
+# Check if tmux is in /usr/local/bin.
+# Copy tmux...
+# Fix this -bash: -I$HOME/local/include/ncurses": No such file or directory
 - name: Create a temporary directory
   file:
     path: "{{ tmux_tmp_dir }}"
