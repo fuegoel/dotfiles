@@ -1,4 +1,5 @@
 ---
+# TODO: Check if libevent and ncurses exist. Check if tmux was installed.
 - name: Create a temporary directory
   file:
     path: "{{ tmux_tmp_dir }}"
