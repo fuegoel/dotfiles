@@ -2,6 +2,9 @@
 - name: Install development tools
   package:
     name: "@Development tools"
+  with_items:
+    - "@Development tools"
+    - libselinux-python
   become: true
   when: ansible_os_family == "RedHat"
 

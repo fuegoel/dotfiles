@@ -29,8 +29,8 @@
     loop_var: pkg
     label: "{{ pkg.name }}"
 
-- name: Compile tmux
-  command: "{{ item.1 }}"
+- name: Compile libevent, ncurses, and tmux
+  shell: "{{ item.1 }}"
   args:
     chdir: "{{ tmux_tmp_dir }}/{{ item.0.name }}"
   with_subelements:
