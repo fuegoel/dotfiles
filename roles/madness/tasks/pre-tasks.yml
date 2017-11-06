@@ -1,7 +1,7 @@
 ---
 - name: Install development tools
   package:
-    name: "@Development tools"
+    name: "{{ item }}"
   with_items:
     - "@Development tools"
     - libselinux-python
@@ -10,6 +10,9 @@
 
 - name: Install development tools
   apt:
-    name: build-essential
+    name: "{{ item }}"
+  with_items:
+    - build-essential
+    - python-selinux
   become: true
   when: ansible_os_family == "Debian"
