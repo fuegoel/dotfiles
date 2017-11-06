@@ -2,7 +2,7 @@
 # Tmux
 install_tmux: true
 tmux_tmp_dir: "{{ ansible_env.HOME }}/tmux_tmp"
-tmux_version: 2.5
+tmux_version: 2.6
 libevent_version: 2.1.8
 ncurses_version: 6.0
 pkgs:
