@@ -1,15 +1,11 @@
 ---
-- name: Clone
-  git:
-    repo: https://github.com/hoaile1/dotfiles.git
-    dest: "{{ ansible_user_dir }}/dotfiles"
-    accept_hostkey: true
-
 - name: Symlink dotfiles
   file:
     src: "{{ ansible_user_dir }}/dotfiles/{{ item }}"
-    dest: "{{ ansible_user_dir }}/{{ item }}"
+    path: "{{ ansible_user_dir }}/{{ item }}"
+    state: link
+    force: yes
   with_items:
     - .gitconfig
-    - .git-promp-colors.sh
+    - .git-prompt-colors.sh
     - .vimrc

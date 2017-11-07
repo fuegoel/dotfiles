@@ -3,48 +3,63 @@
 # Check if libevent and ncurses exist.
 # Check if tmux was installed.
 # Check if tmux is in /usr/local/bin.
-# Copy tmux...
-# Fix this -bash: -I$HOME/local/include/ncurses": No such file or directory
-- name: Create a temporary directory
+- name: Check if libevent and ncurses were compiled
+  stat:
+    path: "{{ ansible_user_dir }}/local/include/ncurses"
+  register: result
+
+- block:
+  - name: Create a temporary directory
+    file:
+      path: "{{ tmux_tmp_dir }}"
+      state: directory
+
+  - name: Download packages
+    get_url:
+      url: "{{ pkg.url }}"
+      dest: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
+    with_items: "{{ pkgs }}"
+    loop_control:
+      loop_var: pkg
+      label: "{{ pkg.name }}"
+
+  - name: Unarchive packages
+    unarchive:
+      src: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
+      dest: "{{ tmux_tmp_dir }}"
+      remote_src: yes
+    with_items: "{{ pkgs }}"
+    loop_control:
+      loop_var: pkg
+      label: "{{ pkg.name }}"
+
+  - name: Compile libevent, ncurses, and tmux
+    shell: "{{ item.1 }}"
+    args:
+      chdir: "{{ tmux_tmp_dir }}/{{ item.0.name }}"
+    with_subelements:
+      - "{{ pkgs }}"
+      - commands
+    loop_control:
+      label: "{{ item.0.name }}"
+    environment:
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:"/usr/local/lib"
+
+  when: not result.stat.exists
+
+- name: Create a local bin directory if it doesn't exist
   file:
-    path: "{{ tmux_tmp_dir }}"
+    path: "{{ ansible_user_dir }}/bin"
     state: directory
-
-- name: Download packages
-  get_url:
-    url: "{{ pkg.url }}"
-    dest: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
-  with_items: "{{ pkgs }}"
-  loop_control:
-    loop_var: pkg
-    label: "{{ pkg.name }}"
-
-- name: Unarchive packages
-  unarchive:
-    src: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
-    dest: "{{ tmux_tmp_dir }}"
-    remote_src: yes
-  with_items: "{{ pkgs }}"
-  loop_control:
-    loop_var: pkg
-    label: "{{ pkg.name }}"
-
-- name: Compile libevent, ncurses, and tmux
-  shell: "{{ item.1 }}"
-  args:
-    chdir: "{{ tmux_tmp_dir }}/{{ item.0.name }}"
-  with_subelements:
-    - "{{ pkgs }}"
-    - commands
-  loop_control:
-    label: "{{ item.0.name }}"
-  environment:
-    LD_LIBRARY_PATH: $LD_LIBRARY_PATH:"/usr/local/lib"
+    mode: 0755
+    recurse: yes
 
 - name: Symlink dotfiles
   file:
     src: "{{ ansible_user_dir }}/dotfiles/{{ item }}"
-    dest: "{{ ansible_user_dir }}/{{ item }}"
+    path: "{{ ansible_user_dir }}/{{ item }}"
+    state: link
+    force: yes
   with_items:
     - .tmux.conf
     - bin/tmux-status-right
