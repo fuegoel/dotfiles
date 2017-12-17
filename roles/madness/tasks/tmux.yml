@@ -1,8 +1,4 @@
 ---
-# TODO:
-# Check if libevent and ncurses exist.
-# Check if tmux was installed.
-# Check if tmux is in /usr/local/bin.
 - name: Check if libevent and ncurses were compiled
   stat:
     path: "{{ ansible_user_dir }}/local/include/ncurses"
