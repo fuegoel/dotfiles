@@ -1,4 +1,16 @@
 ---
+- name: Install rainbows and unicorns
+  gem:
+    name: lolcat
+    state: latest
+
+- name: Get spark
+  get_url:
+    url: https://raw.githubusercontent.com/holman/spark/master/spark
+    dest: /usr/local/bin/spark
+    mode: 0755
+  become: true
+
 - name: Symlink dotfiles
   file:
     src: "{{ ansible_user_dir }}/dotfiles/{{ item }}"
@@ -9,3 +21,4 @@
     - .gitconfig
     - .git-prompt-colors.sh
     - .vimrc
+    - .bashrc
