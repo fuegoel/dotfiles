@@ -37,7 +37,8 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/usr/local/lib"
 
 umask 0022
 
-eval $(keychain --eval --agents ssh)
+eval $(keychain --eval -Q --quiet id_ed25519)
+eval $(keychain --agents ssh,pgp)
 #eval $(keychain --eval --noask --agents ssh id_rsa)
 #eval `ssh-agent -t 60m`
 
