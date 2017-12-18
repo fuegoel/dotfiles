@@ -1,4 +1,10 @@
 ---
+# Keychain
+keychain_version: 2.8.4
+keychain_url: "https://github.com/funtoo/keychain/archive/{{ keychain_version }}.tar.gz"
+keychain_dir: "keychain-{{ keychain_version }}"
+keychain_archive: "{{ keychain_dir }}.tar.gz"
+
 # Tmux
 install_tmux: true
 tmux_tmp_dir: "{{ ansible_env.HOME }}/tmux_tmp"

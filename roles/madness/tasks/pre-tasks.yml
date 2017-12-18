@@ -5,6 +5,7 @@
   with_items:
     - "@Development tools"
     - libselinux-python
+    - rubygems
   become: true
   when: ansible_os_family == "RedHat"
 
@@ -16,3 +17,18 @@
     - python-selinux
   become: true
   when: ansible_os_family == "Debian"
+
+- name: Install keychain
+  get_url:
+    url: "{{ keychain_url }}"
+    dest: "/tmp/{{ keychain_archive }}"
+
+- name: Unarchive keychain
+  unarchive:
+    src: "/tmp/{{ keychain_archive }}"
+    dest: "/tmp/{{ keychain_dir }}"
+
+- name: Copy keychain to /usr/bin
+  copy:
+    src: "/tmp/{{ keychain_dir }}/keychain"
+    dest: /usr/bin/keychain
