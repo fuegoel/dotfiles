@@ -59,3 +59,8 @@
   with_items:
     - .tmux.conf
     - bin/tmux-status-right
+
+- name: Clean up the temporary directory
+  file:
+    path: "{{ tmux_tmp_dir }}"
+    state: absent
