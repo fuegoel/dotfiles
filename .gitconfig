@@ -1,6 +1,7 @@
 [user]
-	email = lee.nylk@gmail.com
+  email = lee.nylk@gmail.com
   name = Hoai Le
+  signingkey = FE8F74AE23DAC58B
 
 [core]
   editor = vim
