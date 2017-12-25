@@ -26,9 +26,10 @@
 - name: Unarchive keychain
   unarchive:
     src: "/tmp/{{ keychain_archive }}"
-    dest: "/tmp/{{ keychain_dir }}"
+    dest: /tmp
 
 - name: Copy keychain to /usr/bin
   copy:
     src: "/tmp/{{ keychain_dir }}/keychain"
     dest: /usr/bin/keychain
+  become: true
