@@ -1,9 +1,9 @@
 call plug#begin('~/.vim/plugged')
 Plug 'flazz/vim-colorschemes'
-Plug 'jiangmiao/auto-pairs.git'
-Plug 'tpope/vim-fugitive.git'
-Plug 'dhruvasagar/vim-table-mode.git'
-Plug 'bronson/vim-trailing-whitespace.git'
+Plug 'https://github.com/jiangmiao/auto-pairs.git'
+Plug 'https://github.com/tpope/vim-fugitive.git'
+Plug 'https://github.com/dhruvasagar/vim-table-mode.git'
+Plug 'https://github.com/bronson/vim-trailing-whitespace.git'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
