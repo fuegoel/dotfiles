@@ -1,70 +1,21 @@
 call plug#begin('~/.vim/plugged')
 Plug 'flazz/vim-colorschemes'
-Plug 'https://github.com/jiangmiao/auto-pairs.git'
-Plug 'https://github.com/tpope/vim-fugitive.git'
-Plug 'https://github.com/wincent/command-t.git'
-Plug 'https://github.com/dhruvasagar/vim-table-mode.git'
-Plug 'https://github.com/bronson/vim-trailing-whitespace.git'
+Plug 'jiangmiao/auto-pairs.git'
+Plug 'tpope/vim-fugitive.git'
+Plug 'dhruvasagar/vim-table-mode.git'
+Plug 'bronson/vim-trailing-whitespace.git'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
-Plug 'greymd/tmux-xpanes'
-Plug 'ekalinin/Dockerfile.vim'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
 Plug 'fatih/vim-go'
 
 call plug#end()
 
-" Disable strange Vi defaults
-set nocompatible
-
-" General Config
-set autoread
-set number
-set backspace=indent,eol,start
-set whichwrap+=<,>,h,l
-set showcmd
-set spelllang=en_us
-set showmode
-set hidden
-set history=10000
-set scrolloff=7
-set sidescrolloff=15
-set sidescroll=1
-set ignorecase
-set smartcase
-set hlsearch
-set incsearch
-set magic
-set showmatch
-set ruler
-set noswapfile
-set nowb
-set nobackup
-set linebreak
-nnoremap <C-e> 7<C-e>
-nnoremap <C-y> 7<C-y>
-
-syntax on
-
-set background=dark
-colorscheme gruvbox
-
-" Indentation
-set autoindent
-set smartindent
-set expandtab
-set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set nowrap
-set textwidth=0
-filetype plugin on
-filetype indent on
-
-" Vim airline
+"""""""""""""""""""
+" Vim Airline
+"""""""""""""""""""
 let g:airline_theme='powerlineish'
 
 set laststatus=2
@@ -113,13 +64,75 @@ let g:airline_skip_empty_sections=1
 let g:airline_section_warning=0
 let g:airline_section_y=0
 
+" Disable strange Vi defaults
+set nocompatible
+
+"""""""""""""""""""
+" General config
+"""""""""""""""""""
+set autoread
+set number
+set backspace=indent,eol,start
+set whichwrap+=<,>,h,l
+set showcmd
+set spelllang=en_us
+set showmode
+set hidden
+set history=10000
+set scrolloff=7
+set sidescrolloff=15
+set sidescroll=1
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set magic
+set showmatch
+set ruler
+set noswapfile
+set nowb
+set nobackup
+set linebreak
+nnoremap <C-e> 7<C-e>
+nnoremap <C-y> 7<C-y>
+
+syntax on
+
+set background=dark
+colorscheme gruvbox
+
+" Display tabs and trailing spaces visually
+" set list listchars=tab:\ \,trail:.
+
+" Indentation
+set autoindent
+set smartindent
+set expandtab
+set smarttab
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
+set nowrap
+set textwidth=0
+filetype plugin on
+filetype indent on
+
 " LaTeX
 set grepprg=grep\ -nH\ $*
 let g:vimtex_compiler_latexmk = {'callback' : 0}
 let g:vimtex_view_method = 'zathura'
 let g:tex_flavor = 'latex'
 
-" Vim autocomplete
+"""""""""""""""
+" File finding
+"""""""""""""""
+" Search down into subfolders
+set path+=**
+
+" Display all matching files
+set wildmenu
+
+"Autocomplete
 imap <Tab> <C-P>
 set complete=.,b,u,]
 set wildmode=longest,list:longest
@@ -131,5 +144,11 @@ set clipboard=unnamed
 " Allow saving read-only files when using vim without sudo
 cmap w!! w !sudo tee > /dev/null %
 
-" Display tabs and trailing spaces visually
-" set list listchars=tab:\ \,trail:.
+" File browsing
+let g:netrw_banner=0
+let g:netrw_browse_split=2
+let g:netrw_winsize=20
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
