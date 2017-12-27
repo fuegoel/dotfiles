@@ -10,6 +10,7 @@ Plug 'lervag/vimtex'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
 Plug 'fatih/vim-go'
+Plug 'roman/golden-ratio'
 
 call plug#end()
 
@@ -152,3 +153,16 @@ let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END
+
+" Split resizing
+set winheight=30
+nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <C-h> <C-w>h<Plug>(golden_ration_resize)
+nnoremap <C-j> <C-w>j<Plug>(golden_ration_resize)
+nnoremap <C-k> <C-w>k<Plug>(golden_ration_resize)
+nnoremap <C-l> <C-w>l<Plug>(golden_ration_resize)
