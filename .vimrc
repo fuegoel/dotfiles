@@ -14,6 +14,9 @@ Plug 'roman/golden-ratio'
 
 call plug#end()
 
+" Disable strange Vi defaults
+set nocompatible
+
 """""""""""""""""""
 " Vim Airline
 """""""""""""""""""
@@ -47,13 +50,13 @@ let g:airline_detect_crypt=1
 let g:airline_detect_spell=1
 let g:airline_detect_iminsert=0
 let g:airline_inactive_collapse=1
-let g:airline_powerline_fonts = 1
-let g:airline_exclude_preview = 0
+let g:airline_powerline_fonts=1
+let g:airline_exclude_preview=0
 
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#branch#empty_message = ''
-let g:airline#extensions#branch#vcs_priority = ["git", "mercurial"]
+let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#branch#empty_message=''
+let g:airline#extensions#branch#vcs_priority=["git", "mercurial"]
 let g:airline#extensions#branch#format=1
 let g:airline#extensions#virtualenv#enabled=1
 let g:airline#extensions#wordcount#enabled=1
@@ -65,8 +68,11 @@ let g:airline_skip_empty_sections=1
 let g:airline_section_warning=0
 let g:airline_section_y=0
 
-" Disable strange Vi defaults
-set nocompatible
+" Enable buffer listing, show filename only, and show tab and tab number
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#fnamemod=':t'
+let g:airline#extensions#tabline#show_tabs=1
+let g:airline#extensions#tabline#tab_nr_type=1
 
 """""""""""""""""""
 " General config
@@ -125,8 +131,7 @@ let g:vimtex_view_method = 'zathura'
 let g:tex_flavor = 'latex'
 
 """""""""""""""
-" File finding
-"""""""""""""""
+
 " Search down into subfolders
 set path+=**
 
@@ -135,7 +140,7 @@ set wildmenu
 
 "Autocomplete
 imap <Tab> <C-P>
-set complete=.,b,u,]
+set complete=.,w,b,u,k,s,t
 set wildmode=longest,list:longest
 set completeopt=menu,preview
 
@@ -153,16 +158,35 @@ let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-augroup ProjectDrawer
-  autocmd!
-  autocmd VimEnter * :Vexplore
-augroup END
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup END
 
-" Split resizing
-set winheight=30
+" Split resizing and movement
+set winheight=10
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 nnoremap <C-h> <C-w>h<Plug>(golden_ration_resize)
 nnoremap <C-j> <C-w>j<Plug>(golden_ration_resize)
 nnoremap <C-k> <C-w>k<Plug>(golden_ration_resize)
 nnoremap <C-l> <C-w>l<Plug>(golden_ration_resize)
+nnoremap <C-x> <C-w>x<Plug>(golden_ration_resize)
+nnoremap <C-c> <C-w>c
+nnoremap <C-o> <C-w>o
+
+" Leader
+let mapleader='\<Space>'
+
+" Buffer
+nnoremap ,n :bnext<CR>
+nnoremap ,p :bprevious<CR>
+nnoremap ,e :enew<CR>
+nnoremap ,d :bdelete<CR>
+nnoremap ,b :ls<CR>:buffer<Space>
+
+" Tab
+nnoremap <C-Up> :tabnew<CR>
+nnoremap <C-Down> :tabclose<CR>
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
