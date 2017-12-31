@@ -17,6 +17,9 @@ call plug#end()
 " Disable strange Vi defaults
 set nocompatible
 
+" Leader
+let mapleader=" "
+
 """""""""""""""""""
 " Vim Airline
 """""""""""""""""""
@@ -78,7 +81,7 @@ let g:airline#extensions#tabline#tab_nr_type=1
 " General config
 """""""""""""""""""
 set autoread
-set number
+set number relativenumber
 set backspace=indent,eol,start
 set whichwrap+=<,>,h,l
 set showcmd
@@ -97,16 +100,25 @@ set magic
 set showmatch
 set ruler
 set noswapfile
-set nowb
+set nowritebackup
 set nobackup
 set linebreak
+set cursorline
 nnoremap <C-e> 7<C-e>
 nnoremap <C-y> 7<C-y>
+nnoremap <silent> <leader>, :noh<CR>
 
 syntax on
 
 set background=dark
 colorscheme gruvbox
+
+" Toggle absolute and relative numbering
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
+augroup END
 
 " Display tabs and trailing spaces visually
 " set list listchars=tab:\ \,trail:.
@@ -165,6 +177,7 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 " Split resizing and movement
 set winheight=10
+set winminheight=5
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 nnoremap <C-h> <C-w>h<Plug>(golden_ration_resize)
@@ -175,8 +188,6 @@ nnoremap <C-x> <C-w>x<Plug>(golden_ration_resize)
 nnoremap <C-c> <C-w>c
 nnoremap <C-o> <C-w>o
 
-" Leader
-let mapleader='\<Space>'
 
 " Buffer
 nnoremap ,n :bnext<CR>
