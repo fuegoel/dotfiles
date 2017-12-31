@@ -1,22 +1,13 @@
 ---
 - name: Install development tools
-  package:
+  dnf:
     name: "{{ item }}"
   with_items:
     - "@Development tools"
     - libselinux-python
     - rubygems
+    - vim-X11
   become: true
-  when: ansible_os_family == "RedHat"
-
-- name: Install development tools
-  apt:
-    name: "{{ item }}"
-  with_items:
-    - build-essential
-    - python-selinux
-  become: true
-  when: ansible_os_family == "Debian"
 
 - name: Install keychain
   get_url:

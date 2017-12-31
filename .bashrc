@@ -43,3 +43,5 @@ eval $(keychain --agents ssh,pgp)
 #eval `ssh-agent -t 60m`
 
 alias clear='clear; echo; echo; seq 1 $(tput cols) | sort -R | spark | lolcat; echo; echo'
+alias vi='vimx'
+alias vim='vimx'
