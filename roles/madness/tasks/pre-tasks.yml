@@ -7,7 +7,23 @@
     - libselinux-python
     - rubygems
     - vim-X11
+    - python-pip
   become: true
+
+- name: Install virtualenv and virtualenvwrapper
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - pip
+    - virtualenv
+    - virtualenvwrapper
+  become: true
+
+- name: Create a directory for virtualenvwrapper
+  file:
+    path: ~/Envs
+    state: directory
 
 - name: Install keychain
   get_url:
