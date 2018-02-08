@@ -11,6 +11,7 @@ Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
 Plug 'fatih/vim-go'
 Plug 'roman/golden-ratio'
+Plug 'ekalinin/Dockerfile.vim'
 
 call plug#end()
 
@@ -177,7 +178,7 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 " Split resizing and movement
 set winheight=10
-set winminheight=5
+" set winminheight=5
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
 nnoremap <C-h> <C-w>h<Plug>(golden_ration_resize)
