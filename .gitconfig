@@ -63,6 +63,7 @@
 	cd = commit --amend
 	cad = commit -a --amend
 	ced = commit --allow-empty --amend
+  cv = commit --verbose
 	#############
 	cp = cherry-pick
 	cpa = cherry-pick --abort
