@@ -133,9 +133,12 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set nowrap
-set textwidth=0
 filetype plugin on
 filetype indent on
+
+" Make it obvious where 80 characters is
+set textwidth=80
+set colorcolumn=+1
 
 " LaTeX
 set grepprg=grep\ -nH\ $*
