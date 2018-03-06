@@ -160,8 +160,9 @@ set complete=.,w,b,u,k,s,t
 set wildmode=longest,list:longest
 set completeopt=menu,preview
 
-" Clipboard
+" Clipboard and pasting
 set clipboard=unnamed
+set pastetoggle=<F2>
 
 " Allow saving read-only files when using vim without sudo
 cmap w!! w !sudo tee > /dev/null %
@@ -191,7 +192,6 @@ nnoremap <C-l> <C-w>l<Plug>(golden_ration_resize)
 nnoremap <C-x> <C-w>x<Plug>(golden_ration_resize)
 nnoremap <C-c> <C-w>c
 nnoremap <C-o> <C-w>o
-
 
 " Buffer
 nnoremap ,n :bnext<CR>
