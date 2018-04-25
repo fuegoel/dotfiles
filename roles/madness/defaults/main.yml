@@ -1,6 +1,6 @@
 ---
 # Keychain
-keychain_version: 2.8.4
+keychain_version: 2.8.5
 keychain_url: "https://github.com/funtoo/keychain/archive/{{ keychain_version }}.tar.gz"
 keychain_dir: "keychain-{{ keychain_version }}"
 keychain_archive: "{{ keychain_dir }}.tar.gz"
@@ -8,9 +8,9 @@ keychain_archive: "{{ keychain_dir }}.tar.gz"
 # Tmux
 install_tmux: true
 tmux_tmp_dir: "{{ ansible_env.HOME }}/tmux_tmp"
-tmux_version: 2.6
+tmux_version: 2.7
 libevent_version: 2.1.8
-ncurses_version: 6.0
+ncurses_version: 6.1
 pkgs:
   - url: "https://github.com/libevent/libevent/releases/download/release-{{ libevent_version }}-stable/libevent-{{ libevent_version }}-stable.tar.gz"
     archive: "libevent-{{ libevent_version }}.tar.gz"
