@@ -14,7 +14,7 @@
     get_url:
       url: "{{ pkg.url }}"
       dest: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
-    with_items: "{{ pkgs }}"
+    loop: "{{ pkgs }}"
     loop_control:
       loop_var: pkg
       label: "{{ pkg.name }}"
@@ -24,7 +24,7 @@
       src: "{{ tmux_tmp_dir }}/{{ pkg.archive }}"
       dest: "{{ tmux_tmp_dir }}"
       remote_src: yes
-    with_items: "{{ pkgs }}"
+    loop: "{{ pkgs }}"
     loop_control:
       loop_var: pkg
       label: "{{ pkg.name }}"
@@ -33,9 +33,7 @@
     shell: "{{ item.1 }}"
     args:
       chdir: "{{ tmux_tmp_dir }}/{{ item.0.name }}"
-    with_subelements:
-      - "{{ pkgs }}"
-      - commands
+    loop: "{{ lookup('subelements', pkgs, 'commands') }}"
     loop_control:
       label: "{{ item.0.name }}"
     environment:
@@ -56,7 +54,7 @@
     path: "{{ ansible_user_dir }}/{{ item }}"
     state: link
     force: yes
-  with_items:
+  loop:
     - .tmux.conf
     - bin/tmux-status-right
 

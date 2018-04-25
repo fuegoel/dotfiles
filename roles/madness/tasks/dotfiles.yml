@@ -17,7 +17,7 @@
     path: "{{ ansible_user_dir }}/{{ item }}"
     state: link
     force: yes
-  with_items:
+  loop:
     - .gitconfig
     - .git-prompt-colors.sh
     - .vimrc

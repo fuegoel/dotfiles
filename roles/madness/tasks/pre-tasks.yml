@@ -2,7 +2,7 @@
 - name: Install development tools
   dnf:
     name: "{{ item }}"
-  with_items:
+  loop:
     - "@Development tools"
     - libselinux-python
     - rubygems
@@ -14,7 +14,7 @@
   pip:
     name: "{{ item }}"
     state: latest
-  with_items:
+  loop:
     - pip
     - virtualenv
     - virtualenvwrapper
