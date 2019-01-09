@@ -42,3 +42,7 @@ pkgs:
 
 # Zsh
 install_zsh: true
+zsh_version: 5.5.1
+zsh_dir: "zsh-{{ zsh_version }}"
+zsh_archive: "{{ zsh_dir }}.tar.gz"
+zsh_url: "http://zsh.org/pub/{{ zsh_archive }}"
