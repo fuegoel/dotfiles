@@ -5,6 +5,6 @@
   when: install_tmux
 
 - include_tasks: zsh.yml
-  when: install_zsh.yml
+  when: install_zsh
 
 - import_tasks: dotfiles.yml
