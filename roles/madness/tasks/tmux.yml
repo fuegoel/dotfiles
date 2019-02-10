@@ -4,6 +4,12 @@
     path: "{{ ansible_user_dir }}/local/include/ncurses"
   register: result
 
+- name: Uninstall system tmux
+  dnf:
+    name: tmux
+    state: absent
+  become: true
+
 - block:
   - name: Create a temporary directory
     file:

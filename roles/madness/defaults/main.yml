@@ -46,3 +46,8 @@ zsh_version: 5.5.1
 zsh_dir: "zsh-{{ zsh_version }}"
 zsh_archive: "{{ zsh_dir }}.tar.gz"
 zsh_url: "http://zsh.org/pub/{{ zsh_archive }}"
+
+unicorns:
+  .bash_git_prompt:
+    repo: https://github.com/magicmonty/bash-git-prompt.git
+    depth: 1

@@ -1,5 +1,5 @@
 ---
-- name: Install rainbows and unicorns
+- name: Install lolcat
   gem:
     name: lolcat
     state: latest
@@ -11,6 +11,33 @@
     mode: 0755
   become: true
 
+- name: Get some unicorns
+  git:
+    repo: "{{ item.value.repo }}"
+    dest: "~/{{ item.key | replace('_', '-') }}"
+    depth: "{{ item.value.depth | default(omit) }}"
+  loop: "{{ unicorns|dict2items }}"
+
+# FIXME: vim-anywhere needs to GNOME crap, so the installing task failes if the
+# DE isn't GNOME.
+- name: Get vim-anywhere
+  get_url:
+    url: https://raw.github.com/cknadler/vim-anywhere/master/install
+    dest: /tmp
+    mode: 0755
+
+- name: Check if vim-anywhere was already installed
+  stat:
+    path: /tmp/vim-anywhere
+  register: vimislovevimislife
+
+- name: Install vim-anywhere if needed
+  command: ./install
+  args:
+    chdir: /tmp
+  when: not vimislovevimislife.stat.exists
+
+# FIXME: Need different bashrc and gitconfig files when not at home.
 - name: Symlink dotfiles
   file:
     src: "{{ ansible_user_dir }}/dotfiles/{{ item }}"
