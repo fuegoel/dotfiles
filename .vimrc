@@ -16,11 +16,12 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'lervag/vimtex'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
-Plug 'fatih/vim-go'
 Plug 'roman/golden-ratio'
 Plug 'ekalinin/Dockerfile.vim'
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-surround'
+Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
@@ -176,7 +177,7 @@ map <silent><Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>"
 map <silent><Leader><S-p> :set paste<CR>O<esc>"*]p:set nopaste<cr>"
 
 " Allow saving read-only files when using vim without sudo
-cmap w!! w !sudo tee > /dev/null %
+cmap W w !sudo tee > /dev/null %
 
 " File browsing
 let g:netrw_banner=0
@@ -224,3 +225,13 @@ nnoremap <CR> o<Esc>
 " Fix issues in quickfix window
 autocmd CmdWinEnter * nnoremap <CR> <CR>
 autocmd BufReadPost quickfix nnoremap <CR> <CR>
+
+inoremap jj <ESC>
+
+" For Rust
+let g:rustfmt_autosave = 1
+let g:racer_cmd = "$HOME/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+
+" For Go
+let g:go_fmt_command = "goimports"

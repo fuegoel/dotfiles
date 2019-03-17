@@ -30,4 +30,4 @@ alias clear='clear; echo; echo; seq 1 $(tput cols) | sort -R | spark | lolcat; e
 alias vi='vimx'
 alias vim='vimx'
 
-export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/bin:$HOME/.cargo/bin:/usr/local/go/bin"
