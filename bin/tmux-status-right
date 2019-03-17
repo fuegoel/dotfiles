@@ -25,19 +25,19 @@ bat()
 			st="⚡"
 			;;
 	esac
-	echo "#[bg=colour14]#[fg=colour0]▒░$st$(( 100 * $bn / $bf ))%"
+	echo " $st$(( 100 * $bn / $bf ))%"
 }
 
 mtime()
 {
 	mtime=$(date +'%H:%M:%S')
-  echo "#[bg=colour14]#[fg=colour0]$mtime"
+  echo "$mtime"
 }
 
 mday()
 {
-  mday=$(date +'%a %b %d')
-  echo "#[bg=colour14]#[fg=colour0]$mday"
+  mday=$(date +'%a %d/%m/%y')
+  echo "$mday "
 }
 
-echo "░`bat`░▒░`mtime`░▒░`mday`░"
+echo "#[bg=colour242]#[fg=colour231]`bat` | `mtime` | `mday`"
