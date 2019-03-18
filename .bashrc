@@ -31,3 +31,4 @@ alias vi='vimx'
 alias vim='vimx'
 
 export PATH="$PATH:$HOME/bin:$HOME/.cargo/bin:/usr/local/go/bin"
+eval $(thefuck --alias 2>/dev/null)

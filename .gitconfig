@@ -44,10 +44,10 @@
   autosetuprebase = always # Always rebase when pulling
 
 [pull]
-	rebase = true
+  rebase = true
 
 [rebase]
-	autoStash = true
+  autoStash = true
 
 [alias]
   a = add
