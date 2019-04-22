@@ -122,6 +122,7 @@ nnoremap <silent> <leader>, :noh<CR>
 " Color
 set background=dark
 colorscheme gruvbox
+let g:gruvbox_contrast_dark = "hard"
 
 " Toggle absolute and relative numbering
 augroup numbertoggle
@@ -199,6 +200,7 @@ nnoremap <C-j> <C-w>j<Plug>(golden_ration_resize)
 nnoremap <C-k> <C-w>k<Plug>(golden_ration_resize)
 nnoremap <C-l> <C-w>l<Plug>(golden_ration_resize)
 nnoremap <C-x> <C-w>x<Plug>(golden_ration_resize)
+nnoremap <C-o> <C-w>o
 
 " Buffer
 nnoremap ,n :bnext<CR>
