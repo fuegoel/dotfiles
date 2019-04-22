@@ -7,21 +7,20 @@ endif
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'flazz/vim-colorschemes'
-Plug 'https://github.com/jiangmiao/auto-pairs.git'
+"Plug 'https://github.com/jiangmiao/auto-pairs.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/dhruvasagar/vim-table-mode.git'
 Plug 'https://github.com/bronson/vim-trailing-whitespace.git'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'lervag/vimtex'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
 Plug 'roman/golden-ratio'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'tpope/vim-surround'
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
@@ -73,10 +72,6 @@ let g:airline#extensions#branch#empty_message=''
 let g:airline#extensions#branch#vcs_priority=["git", "mercurial"]
 let g:airline#extensions#branch#format=1
 let g:airline#extensions#virtualenv#enabled=1
-let g:airline#extensions#wordcount#enabled=1
-let g:airline#extensions#wordcount#filetypes='tex'
-let g:airline#extensions#wordcount#formatter='default'
-let g:airline#extensions#wordcount#format='%d words'
 
 let g:airline_skip_empty_sections=1
 let g:airline_section_warning=0
@@ -151,16 +146,8 @@ filetype indent on
 set textwidth=80
 set colorcolumn=+1
 
-" LaTeX
-set grepprg=grep\ -nH\ $*
-let g:vimtex_compiler_latexmk = {'callback' : 0}
-let g:vimtex_view_method = 'zathura'
-let g:tex_flavor = 'latex'
-
-" Search down into subfolders
-set path+=**
-
-" Display all matching files
+" Fuzzy finder
+set path=$PWD/**
 set wildmenu
 
 "Autocomplete
@@ -177,7 +164,7 @@ map <silent><Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>"
 map <silent><Leader><S-p> :set paste<CR>O<esc>"*]p:set nopaste<cr>"
 
 " Allow saving read-only files when using vim without sudo
-cmap W w !sudo tee > /dev/null %
+cmap w!! w !sudo tee > /dev/null %
 
 " File browsing
 let g:netrw_banner=0
@@ -187,10 +174,10 @@ let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-" augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-" augroup END
+"augroup ProjectDrawer
+"  autocmd!
+"  autocmd VimEnter * :Vexplore
+"augroup END
 
 " Split resizing and movement
 set winheight=10
@@ -202,6 +189,7 @@ nnoremap <C-k> <C-w>k<Plug>(golden_ration_resize)
 nnoremap <C-l> <C-w>l<Plug>(golden_ration_resize)
 nnoremap <C-x> <C-w>x<Plug>(golden_ration_resize)
 nnoremap <C-o> <C-w>o
+nnoremap <C-q> <C-w>q
 
 " Buffer
 nnoremap ,n :bnext<CR>
@@ -225,13 +213,6 @@ nnoremap <CR> o<Esc>
 " Fix issues in quickfix window
 autocmd CmdWinEnter * nnoremap <CR> <CR>
 autocmd BufReadPost quickfix nnoremap <CR> <CR>
-
-inoremap jj <ESC>
-
-" For Rust
-let g:rustfmt_autosave = 1
-let g:racer_cmd = "$HOME/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
 
 " For Go
 let g:go_fmt_command = "goimports"
