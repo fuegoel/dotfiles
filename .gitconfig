@@ -1,5 +1,6 @@
 [user]
-  email = hoailtt@protonmail.com
+  #email = hoailtt@protonmail.com
+  email = hoai.le@relexsolutions.com
   name = Hoai Le
   signingkey = 29FFB09774D2BDE2
 
@@ -32,7 +33,7 @@
 [color "status"]
   added = green bold
   changed = yellow bold
-  untracked = red bold
+  untracked = red
 
 [diff]
   tool = vimdiff

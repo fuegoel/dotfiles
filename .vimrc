@@ -7,7 +7,7 @@ endif
 " Plugins
 call plug#begin('~/.vim/plugged')
 Plug 'flazz/vim-colorschemes'
-"Plug 'https://github.com/jiangmiao/auto-pairs.git'
+Plug 'https://github.com/jiangmiao/auto-pairs.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/dhruvasagar/vim-table-mode.git'
 Plug 'https://github.com/bronson/vim-trailing-whitespace.git'
@@ -15,14 +15,23 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
-Plug 'roman/golden-ratio'
+"Plug 'roman/golden-ratio'
+Plug 'zhaocai/GoldenView.Vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'tpope/vim-surround'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'tyrannicaltoucan/vim-deep-space'
+Plug 'hashivim/vim-terraform'
+Plug 'juliosueiras/vim-terraform-completion'
+"Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 call plug#end()
+
+"let g:NERDTreeWinSize=31
+let g:goldenview__enable_default_mapping = 0
 
 " Disable strange Vi defaults
 set nocompatible
@@ -183,11 +192,11 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 set winheight=10
 nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
-nnoremap <C-h> <C-w>h<Plug>(golden_ration_resize)
-nnoremap <C-j> <C-w>j<Plug>(golden_ration_resize)
-nnoremap <C-k> <C-w>k<Plug>(golden_ration_resize)
-nnoremap <C-l> <C-w>l<Plug>(golden_ration_resize)
-nnoremap <C-x> <C-w>x<Plug>(golden_ration_resize)
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <C-x> <C-w>x
 nnoremap <C-o> <C-w>o
 nnoremap <C-q> <C-w>q
 
@@ -216,3 +225,62 @@ autocmd BufReadPost quickfix nnoremap <CR> <CR>
 
 " For Go
 let g:go_fmt_command = "goimports"
+"let g:go_metalinter_autosave = 1
+"let g:go_metalinter_deadline = "5s"
+let g:go_auto_type_info = 1
+set updatetime=100
+"let g:go_auto_sameids = 1
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
+set autowrite
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd FileType go nmap <leader>t <Plug>(go-test)
+autocmd FileType go nmap <leader>i <Plug>(go-info)
+autocmd FileType go nmap <leader>v :vsp <CR>:exe "GoDef" <CR>
+autocmd FileType go nmap <leader>s :sp <CR>:exe "GoDef" <CR>
+autocmd FileType go nmap <leader>t :tab split <CR>:exe "GoDef" <CR>
+autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+" For terraform
+let g:terraform_align=1
+let g:terraform_fold_section=1
+let g:terraform_remap_spacebar=1
+let g:terraform_commentstring='//%s'
+let g:terraform_fmt_on_save=1
