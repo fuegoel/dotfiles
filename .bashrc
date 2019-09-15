@@ -12,14 +12,14 @@ GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
 source ~/.bash-git-prompt/gitprompt.sh
 
 # Virtualenvwrapper
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
 if [ -f $HOME/Envs ]; then
   export WORKON_HOME=$HOME/Envs
 else
   export WORKON_HOME=$HOME/.virtualenvs
 fi
-source /usr/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper.sh
 
 # Keychain
 if [ -f /usr/bin/keychain ]; then

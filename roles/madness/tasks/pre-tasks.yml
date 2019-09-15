@@ -1,33 +1,14 @@
 ---
 - name: Install development tools
   dnf:
-    name: "{{ item }}"
-  loop:
-    - "@Development tools"
-    - libselinux-python
-    - rubygems
-    - vim-X11
-    - vim-enhanced
-    - python-pip
-    - gitk
-    - xclip
-    - powerline-fonts
+    name: "{{ dev_pkgs }}"
   become: true
 
 - name: Install virtualenv and virtualenvwrapper
   pip:
-    name: "{{ item }}"
+    name: "{{ pip_pkgs }}"
     state: latest
-  loop:
-    - pip
-    - virtualenv
-    - virtualenvwrapper
   become: true
-
-- name: Create a directory for virtualenvwrapper
-  file:
-    path: ~/Envs
-    state: directory
 
 - name: Download keychain
   get_url:
