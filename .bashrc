@@ -1,4 +1,5 @@
-# Source global definitions
+#!/usr/bin/env bash
+
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
@@ -12,14 +13,10 @@ GIT_PROMPT_THEME_FILE=~/.git-prompt-colors.sh
 source ~/.bash-git-prompt/gitprompt.sh
 
 # Virtualenvwrapper
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
-if [ -f $HOME/Envs ]; then
-  export WORKON_HOME=$HOME/Envs
-else
-  export WORKON_HOME=$HOME/.virtualenvs
-fi
-source /usr/local/bin/virtualenvwrapper.sh
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
+export WORKON_HOME=$HOME/.venv
+source $HOME/.local/bin/virtualenvwrapper.sh
+workon work
 
 # Keychain
 if [ -f /usr/bin/keychain ]; then
@@ -31,24 +28,25 @@ fi
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"/usr/local/lib"
 
 # Aliases
-if [ -f /usr/bin/lolcat ]; then
+if [ -f ~/bin/lolcat ]; then
   alias clear='clear; echo; echo; seq 1 $(tput cols) | sort -R | spark | lolcat; echo; echo'
 fi
 if [ -f /usr/bin/vimx ]; then
   alias vi='vimx'
   alias vim='vimx'
 fi
-
-export PATH="$PATH:$HOME/bin:/usr/local/go/bin:$HOME/go/bin:/usr/local/lib/nodejs/node-v12.4.0-linux-x64/bin"
-if [ -d "$HOME/.local/vim/bin/"  ] ; then
-  export PATH="$HOME/.local/vim/bin:$PATH"
+if [ -f /usr/local/bin/terragrunt ]; then
+  alias tg='terragrunt'
+  alias tgfm='terragrunt hclfmt .'
 fi
+alias tf='terraform'
+alias k=kubectl
 
-source $HOME/tmux_completion.sh
+#export PATH="$PATH:$HOME/bin:/usr/local/go/bin:$HOME/go/bin:/usr/local/lib/nodejs/node-v12.4.0-linux-x64/bin:$HOME/.local/bin:$HOME/.virtualenvs/work/bin"
+export PATH="$PATH:$HOME/bin:/usr/local/go/bin:$HOME/go/bin:/usr/local/lib/nodejs/node-v12.4.0-linux-x64/bin:$HOME/.local/bin"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 setxkbmap -option caps:escape
-
 # If not running interactively, don't do anything
 case $- in
   *i*) ;;
@@ -56,58 +54,17 @@ case $- in
 esac
 
 # Path to the bash it configuration
-export BASH_IT="/home/batushka/.bash_it"
-
-# Lock and Load a custom theme file.
-# Leave empty to disable theming.
-# location /.bash_it/themes/
-export BASH_IT_THEME='bobby'
-
-# (Advanced): Change this to the name of your remote repo if you
-# cloned bash-it with a remote other than origin such as `bash-it`.
-# export BASH_IT_REMOTE='bash-it'
-
-# Your place for hosting Git repos. I use this for private repos.
-export GIT_HOSTING='git@git.domain.com'
-
-# Don't check mail when opening terminal.
-unset MAILCHECK
-
-# Change this to your console based IRC client of choice.
-export IRC_CLIENT='irssi'
-
-# Set this to the command you use for todo.txt-cli
-export TODO="t"
-
-# Set this to false to turn off version control status checking within the prompt for all themes
-export SCM_CHECK=true
-
-# Set Xterm/screen/Tmux title with only a short hostname.
-# Uncomment this (or set SHORT_HOSTNAME to something else),
-# Will otherwise fall back on $HOSTNAME.
-#export SHORT_HOSTNAME=$(hostname -s)
-
-# Set Xterm/screen/Tmux title with only a short username.
-# Uncomment this (or set SHORT_USER to something else),
-# Will otherwise fall back on $USER.
-#export SHORT_USER=${USER:0:8}
-
-# Set Xterm/screen/Tmux title with shortened command and directory.
-# Uncomment this to set.
-#export SHORT_TERM_LINE=true
-
-# Set vcprompt executable path for scm advance info in prompt (demula theme)
-# https://github.com/djl/vcprompt
-#export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
-
-# (Advanced): Uncomment this to make Bash-it reload itself automatically
-# after enabling or disabling aliases, plugins, and completions.
-# export BASH_IT_AUTOMATIC_RELOAD_AFTER_CONFIG_CHANGE=1
-
-# Uncomment this to make Bash-it create alias reload.
-# export BASH_IT_RELOAD_LEGACY=1
+export BASH_IT="$HOME/.bash_it"
 
 # Load Bash It
 source "$BASH_IT"/bash_it.sh
 
-workon work3
+umask 022
+
+npm set prefix ~/.npm
+PATH="$HOME/.npm/bin:$PATH"
+PATH="./node_modules/.bin:$PATH"
+
+export ANSIBLE_CONFIG=~/.ansible.cfg
+
+eval "$(direnv hook bash)"

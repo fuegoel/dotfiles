@@ -15,7 +15,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
 Plug 'pearofducks/ansible-vim'
-"Plug 'roman/golden-ratio'
 Plug 'zhaocai/GoldenView.Vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'tpope/vim-surround'
@@ -23,10 +22,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'tyrannicaltoucan/vim-deep-space'
 Plug 'hashivim/vim-terraform'
-Plug 'juliosueiras/vim-terraform-completion'
-"Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 call plug#end()
 
@@ -38,6 +34,7 @@ set nocompatible
 
 " Leader
 let mapleader=" "
+let maplocalleader="\\"
 
 """""""""""""""""""
 " Vim Airline
@@ -176,13 +173,13 @@ map <silent><Leader><S-p> :set paste<CR>O<esc>"*]p:set nopaste<cr>"
 cmap w!! w !sudo tee > /dev/null %
 
 " File browsing
-let g:netrw_banner=0
-let g:netrw_browse_split=2
-let g:netrw_winsize=20
-let g:netrw_altv=1
-let g:netrw_liststyle=3
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+"let g:netrw_banner=0
+"let g:netrw_browse_split=2
+"let g:netrw_winsize=20
+"let g:netrw_altv=1
+"let g:netrw_liststyle=3
+"let g:netrw_list_hide=netrw_gitignore#Hide()
+"let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 "augroup ProjectDrawer
 "  autocmd!
 "  autocmd VimEnter * :Vexplore
