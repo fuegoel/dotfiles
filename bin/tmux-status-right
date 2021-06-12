@@ -4,9 +4,9 @@ bat()
 {
 	BATPATH=/sys/class/power_supply/BAT0
 	STATUS=$BATPATH/status
-  BATFULL=$BATPATH/energy_full
+  BATFULL=$BATPATH/charge_full
   if [ -f $BATFULL ]; then
-    BATNOW=$BATPATH/energy_now
+    BATNOW=$BATPATH/charge_now
   else
     BATFULL=$BATPATH/charge_full
     BATNOW=$BATPATH/charge_now
@@ -25,7 +25,7 @@ bat()
 			st="⚡"
 			;;
 	esac
-	echo " $st$(( 100 * $bn / $bf ))%"
+	echo "$(( 100 * $bn / $bf ))%"
 }
 
 mtime()
@@ -40,4 +40,4 @@ mday()
   echo "$mday "
 }
 
-echo "#[bg=colour242]#[fg=colour231]`bat` | `mtime` | `mday`"
+echo "#[bg=colour242]#[fg=colour231] `bat` | `mtime` | `mday`"

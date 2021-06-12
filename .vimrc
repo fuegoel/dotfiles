@@ -11,23 +11,22 @@ Plug 'https://github.com/jiangmiao/auto-pairs.git'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://github.com/dhruvasagar/vim-table-mode.git'
 Plug 'https://github.com/bronson/vim-trailing-whitespace.git'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'docker/docker', {'rtp': '/contrib/syntax/vim/'}
-Plug 'pearofducks/ansible-vim'
-Plug 'zhaocai/GoldenView.Vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'tpope/vim-surround'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'scrooloose/nerdtree'
 Plug 'hashivim/vim-terraform'
+Plug 'ap/vim-buftabline'
+Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
-"let g:NERDTreeWinSize=31
-let g:goldenview__enable_default_mapping = 0
+let g:NERDTreeWinSize=30
+map <C-n> :NERDTreeToggle<CR>
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Disable strange Vi defaults
 set nocompatible
@@ -36,62 +35,7 @@ set nocompatible
 let mapleader=" "
 let maplocalleader="\\"
 
-"""""""""""""""""""
-" Vim Airline
-"""""""""""""""""""
-let g:airline_theme='powerlineish'
-
-set laststatus=2
-set t_Co=256
-set ttimeoutlen=50
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" Powerline symbols
-let g:airline_left_sep = '▓▒░'
-let g:airline_left_alt_sep = '▒'
-let g:airline_right_sep = '░▒▓'
-let g:airline_right_alt_sep = '░'
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.maxlinenr = '☰'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.notexists = '∄'
-let g:airline_symbols.whitespace = 'Ξ'
-
-let g:airline_detect_modified=1
-let g:airline_detect_paste=1
-let g:airline_detect_crypt=1
-let g:airline_detect_spell=1
-let g:airline_detect_iminsert=0
-let g:airline_inactive_collapse=1
-let g:airline_powerline_fonts=1
-let g:airline_exclude_preview=0
-
-let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
-let g:airline#extensions#branch#enabled=1
-let g:airline#extensions#branch#empty_message=''
-let g:airline#extensions#branch#vcs_priority=["git", "mercurial"]
-let g:airline#extensions#branch#format=1
-let g:airline#extensions#virtualenv#enabled=1
-
-let g:airline_skip_empty_sections=1
-let g:airline_section_warning=0
-let g:airline_section_y=0
-
-" Enable buffer listing, show filename only, and show tab and tab number
-let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#fnamemod=':t'
-let g:airline#extensions#tabline#show_tabs=1
-let g:airline#extensions#tabline#tab_nr_type=1
-
-"""""""""""""""""""
 " General config
-"""""""""""""""""""
 syntax on
 set autoread
 set number relativenumber
@@ -101,7 +45,7 @@ set showcmd
 set spelllang=en_us
 set showmode
 set hidden
-set history=10000
+set history=1000
 set scrolloff=7
 set sidescrolloff=15
 set sidescroll=1
@@ -117,14 +61,20 @@ set nowritebackup
 set nobackup
 set linebreak
 set cursorline
+set encoding=utf-8
 nnoremap <C-e> 7<C-e>
 nnoremap <C-y> 7<C-y>
 nnoremap <silent> <leader>, :noh<CR>
 
 " Color
+if &t_Co >= 256
+  set termguicolors
+end
 set background=dark
 colorscheme gruvbox
-let g:gruvbox_contrast_dark = "hard"
+let g:gruvbox_contrast_dark = "medium"
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " Toggle absolute and relative numbering
 augroup numbertoggle
@@ -145,6 +95,7 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set nowrap
+
 filetype plugin on
 filetype indent on
 
@@ -156,7 +107,7 @@ set colorcolumn=+1
 set path=$PWD/**
 set wildmenu
 
-"Autocomplete
+" Autocomplete
 imap <Tab> <C-P>
 set complete=.,w,b,u,k,s,t
 set wildmode=longest,list:longest
@@ -166,29 +117,18 @@ set completeopt=menu,preview
 set clipboard=unnamed
 set pastetoggle=<F2>
 vnoremap <C-c> "*y
-map <silent><Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>"
-map <silent><Leader><S-p> :set paste<CR>O<esc>"*]p:set nopaste<cr>"
+map <silent><leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>"
+map <silent><leader><S-p> :set paste<CR>O<esc>"*]p:set nopaste<cr>"
 
 " Allow saving read-only files when using vim without sudo
 cmap w!! w !sudo tee > /dev/null %
 
-" File browsing
-"let g:netrw_banner=0
-"let g:netrw_browse_split=2
-"let g:netrw_winsize=20
-"let g:netrw_altv=1
-"let g:netrw_liststyle=3
-"let g:netrw_list_hide=netrw_gitignore#Hide()
-"let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-"augroup ProjectDrawer
-"  autocmd!
-"  autocmd VimEnter * :Vexplore
-"augroup END
-
 " Split resizing and movement
 set winheight=10
-nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
-nnoremap <silent> - :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <silent> <leader>+ :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+nnoremap <silent> <leader>> :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
+nnoremap <silent> <leader>< :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -197,36 +137,37 @@ nnoremap <C-x> <C-w>x
 nnoremap <C-o> <C-w>o
 nnoremap <C-q> <C-w>q
 
-" Buffer
-nnoremap ,n :bnext<CR>
-nnoremap ,p :bprevious<CR>
-nnoremap ,e :enew<CR>
-nnoremap ,d :bdelete<CR>
-nnoremap ,b :ls<CR>:buffer<Space>
-
 " Open new split panes to right and bottom
 set splitright
 set splitbelow
 
-" Tab
-nnoremap <C-Up> :tabnew<CR>
-nnoremap <C-Down> :tabclose<CR>
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+" Buffer
+nnoremap <leader>s :ls<CR>:buffer<Space>
+
+" Buftabline
+let g:buftabline_numbers = 2 " Ordinal number
+nmap <leader>1 <Plug>BufTabLine.Go(1)
+nmap <leader>2 <Plug>BufTabLine.Go(2)
+nmap <leader>3 <Plug>BufTabLine.Go(3)
+nmap <leader>4 <Plug>BufTabLine.Go(4)
+nmap <leader>5 <Plug>BufTabLine.Go(5)
+nmap <leader>6 <Plug>BufTabLine.Go(6)
+nmap <leader>7 <Plug>BufTabLine.Go(7)
+nmap <leader>8 <Plug>BufTabLine.Go(8)
+nmap <leader>9 <Plug>BufTabLine.Go(9)
+nmap <leader>10 <Plug>BufTabLine.Go(10)
 
 " Use enter to create new lines without entering insert mode
 nnoremap <CR> o<Esc>
+
 " Fix issues in quickfix window
 autocmd CmdWinEnter * nnoremap <CR> <CR>
 autocmd BufReadPost quickfix nnoremap <CR> <CR>
 
 " For Go
 let g:go_fmt_command = "goimports"
-"let g:go_metalinter_autosave = 1
-"let g:go_metalinter_deadline = "5s"
 let g:go_auto_type_info = 1
 set updatetime=100
-"let g:go_auto_sameids = 1
 let g:tagbar_type_go = {
 	\ 'ctagstype' : 'go',
 	\ 'kinds'     : [
@@ -255,25 +196,8 @@ let g:tagbar_type_go = {
 	\ 'ctagsargs' : '-sort -silent'
 \ }
 set autowrite
-autocmd FileType go nmap <leader>r <Plug>(go-run)
-autocmd FileType go nmap <leader>t <Plug>(go-test)
-autocmd FileType go nmap <leader>i <Plug>(go-info)
-autocmd FileType go nmap <leader>v :vsp <CR>:exe "GoDef" <CR>
-autocmd FileType go nmap <leader>s :sp <CR>:exe "GoDef" <CR>
-autocmd FileType go nmap <leader>t :tab split <CR>:exe "GoDef" <CR>
-autocmd BufNewFile,BufRead *.go setlocal tabstop=4 shiftwidth=4
+
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
-
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
 " For terraform
 let g:terraform_align=1
@@ -281,3 +205,54 @@ let g:terraform_fold_section=1
 let g:terraform_remap_spacebar=1
 let g:terraform_commentstring='//%s'
 let g:terraform_fmt_on_save=1
+
+let g:currentmode={
+       \ 'n'  : 'Normal',
+       \ 'v'  : 'Visual',
+       \ 'V'  : 'V-Line',
+       \ '' : 'V-Block',
+       \ 'i'  : 'Insert',
+       \ 'R'  : 'Replace',
+       \ 'Rv' : 'V-Replace',
+       \ 'c'  : 'Command',
+       \}
+
+" Statusline
+function! StlReadOnly() abort
+  if &readonly || !&modifiable
+    return ' '
+  else
+    return ''
+endfunction
+
+function! StlModified() abort
+  if &modified
+    return ' +'
+  else
+    return ''
+endfunction
+
+function! StlGit() abort
+  let i = ''
+  if fugitive#head() != ''
+    return '  ' . i . ' ' . fugitive#head() . ' '
+  else
+    return ''
+  endif
+endfunction
+
+set laststatus=2
+set statusline=
+set statusline+=%1*\%{StlGit()} " Git branch
+set statusline+=%2*\ %f%{StlReadOnly()}%{StlModified()} " File name
+set statusline+=%= " Switch to the right side
+set statusline+=%y " File type
+set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}] " Encoding
+set statusline+=\ %*
+set statusline+=%3*\ %l/%L\ [%p%%] " Row number/total, percentage
+set statusline+=\ %c " Column number
+set statusline+=\ %*
+
+hi User1 ctermbg=62 ctermfg=white
+hi User2 ctermbg=239
+hi User3 ctermbg=65 ctermfg=white
